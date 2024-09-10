@@ -1,0 +1,59 @@
+Feature: Validate Sorting of New Articles on Hacker News
+Feature Description:
+This feature ensures that the new articles listed on Hacker News are sorted in descending order of their publication time. The goal is to validate that the newest articles appear first on the "newest" page.
+
+Scenario: Validate that the first 100 articles on the Hacker News 'newest' page are sorted from newest to oldest.
+
+Given:
+
+I have access to the Hacker News API to fetch the latest stories.
+I have a web browser capable of navigating to the Hacker News "newest" page.
+When:
+
+I navigate to the Hacker News "newest" page using a web browser.
+I fetch the list of the 500 most recent story IDs from the Hacker News API.
+I retrieve the detailed data for the first 100 stories based on these IDs.
+I extract the publication timestamps from these 100 stories.
+Then:
+
+I validate that the timestamps for these 100 stories are in descending order.
+I log the results of the validation, including any specific discrepancies.
+I confirm that the articles are sorted correctly and close the browser.
+Detailed BDD Breakdown
+Given:
+
+API Access: The script has access to the Hacker News API endpoint to fetch the latest story IDs.
+Web Browser: The script uses a headless or non-headless browser (via Playwright) to navigate to the actual "newest" page.
+When:
+
+Navigation: The script opens the "newest" page on Hacker News.
+Fetch Story IDs: The script sends a request to the API and retrieves the 500 most recent story IDs.
+Fetch Story Details: The script requests details for the first 100 of these story IDs.
+Extract Timestamps: From the story details, the script extracts the time field (which represents when each story was published).
+Then:
+
+Sorting Validation: The script checks if each timestamp is greater than or equal to the next, ensuring that the stories are in descending order.
+Log Results: The script logs the timestamps, the validation process, and any errors encountered during sorting.
+Final Confirmation: The script confirms whether the stories are sorted correctly based on the validation results and closes the browser cleanly.
+Additional Scenarios
+You can also consider additional scenarios for completeness:
+
+Scenario: Validate that the API returns valid story IDs
+
+Given I have fetched 500 story IDs from the API.
+When I check each ID.
+Then each ID should correspond to a valid story when requested from the API.
+Scenario: Handle cases where the page does not load
+
+Given the Hacker News "newest" page may fail to load.
+When I attempt to navigate to the page.
+Then I should handle the error gracefully and log a relevant error message.
+Scenario: Ensure no API rate limits are exceeded
+
+Given the script is making multiple API requests.
+When I fetch details for 100 stories.
+Then I should ensure that I am not exceeding the API rate limits.
+Summary
+Why 100 Story Details?: It’s a balanced approach to validate sorting while being resource-efficient.
+Validation: The method is validated by ensuring that the top 100 stories are correctly ordered, providing confidence in the sorting.
+BDD: The BDD breakdown explains the steps in a natural language, helping both technical and non-technical stakeholders understand what the script is doing and why.
